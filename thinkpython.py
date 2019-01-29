@@ -9,4 +9,5 @@ def hypotenuse(a, b):
     c_square_root = math.sqrt(csquared)
     return c_square_root
 
-print(hypotenuse(3, 4))
+hyp = hypotenuse(3, 4)
+print(hyp)
