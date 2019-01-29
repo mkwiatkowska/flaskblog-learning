@@ -10,3 +10,4 @@ def hypotenuse(a, b):
     return c_square_root
 
 print(hypotenuse(3, 4))
+# dla kucia
