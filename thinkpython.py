@@ -1,7 +1,7 @@
 """
 TODO: review
 
-    * 
+    * uncomment all function calls
 
 """
 
@@ -17,7 +17,7 @@ def hypotenuse(a, b):
     return c_square_root
 
 hyp = hypotenuse(3, 4)
-print(hyp)
+# print(hyp)
 
 
 # chapter 6.4, boolean functions
@@ -28,7 +28,7 @@ def is_between(x, y, z):
         return False
 
 ans = is_between(2, 5, 4)
-print(ans)
+# print(ans)
 
 
 # recursive palindrome checker
@@ -59,15 +59,15 @@ def ret_middle(word):
 lista = ["krok", "ara", "onomatopeja", "abba", ""]
 
 # szybki czit szit do trajkeczowania
-for each in lista:
-    try:
-        print(is_palindrome(each))
-    except ValueError as err:
-        print('wyjebalo ci to {:s}'.format(str(err)))
-    else:
-        print(':3')
-    finally:
-        print('przeiterowalem bez bolu')
+# for each in lista:
+#     try:
+#         print(is_palindrome(each))
+#     except ValueError as err:
+#         print('wyjebalo ci to {:s}'.format(str(err)))
+#     else:
+#         print(':3')
+#     finally:
+#         print('przeiterowalem bez bolu')
 
 
 def is_power(a, b):
@@ -80,6 +80,27 @@ def is_power(a, b):
         return False
 
 
-print(is_power(1024, 2))
+# print(is_power(1024, 2))
+
+
+# func print_n from 5.8 but done using iteration instead of recursion
+def print_n(s, n):
+    while (n > 0):
+        print(s)
+        n -= 1
+
+
+# print_n("test", 4)
+
+
+def func_type():
+    while True:
+        line = input('> ')
+        if (line == 'done'):
+            break
+        print(line)
+
+
+# func_type()
 
 
