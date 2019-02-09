@@ -103,4 +103,25 @@ def func_type():
 
 # func_type()
 
+# ex 7.3
+def approximation_one_by_pie():
+    final_series = series()
+    one_by_pie = (2 * math.sqrt(2))/(9801) * (final_series)
+    print(one_by_pie)
+
+
+def series():
+    series = 0.0
+    k = 0
+    while (True):
+        serie_step = ((math.factorial(4 * k)) * (1103 + 26390 * k))/(math.pow(math.factorial(k), 4) * math.pow(396, 4*k))
+        if (serie_step < math.pow(10, -15)):
+            return series
+            break
+        series += serie_step
+        k += 1
+
+
+approximation_one_by_pie()
+print(1 / math.pi)
 
