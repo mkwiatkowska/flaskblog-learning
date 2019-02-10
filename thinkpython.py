@@ -114,7 +114,8 @@ def series():
     series = 0.0
     k = 0
     while (True):
-        serie_step = ((math.factorial(4 * k)) * (1103 + 26390 * k))/(math.pow(math.factorial(k), 4) * math.pow(396, 4*k))
+        serie_step = ((math.factorial(4 * k)) * (1103 + 26390 * k)) / \
+                (math.pow(math.factorial(k), 4) * math.pow(396, 4*k))
         if (serie_step < math.pow(10, -15)):
             return series
             break
@@ -125,3 +126,13 @@ def series():
 approximation_one_by_pie()
 print(1 / math.pi)
 
+
+# printing string backwards
+def print_back(word):
+    index = len(word) - 1
+    while (index >= 0):
+        print(word[index])
+        index -= 1
+
+
+print_back('katarzis')
