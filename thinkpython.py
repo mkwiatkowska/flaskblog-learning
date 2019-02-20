@@ -138,7 +138,7 @@ def print_back(word):
 print_back('katarzis')
 
 
-#ex 10.1
+# ex 10.1
 def nested_sum(t):
     sum = 0
     for i in t:
@@ -148,4 +148,53 @@ def nested_sum(t):
 
 
 listka = [[1, 1], [2], [2, 5]]
-nested_sum(listka)
+print(nested_sum(listka))
+
+
+# ex. 10.2
+def cumsum(t):
+    wynikowa = []
+    accu = 0
+    for i in t:
+        accu += i 
+        wynikowa.append(accu)
+    return wynikowa
+
+
+testowa = [1, 3, 6, 6, 7]
+print(cumsum(testowa))
+
+
+# ex. 10.3
+def middle(t):
+    if (len(t) > 2):
+        return middle(t[1:-1])
+    return t
+
+
+tet1 = [1, 2, 3]
+tet2 = [1, 2, 3, 5]
+
+print(middle(tet1))
+print(middle(tet2))
+
+
+# ex 10.5
+def is_sorted(t):
+    sorted_t = sorted(t)
+    cur_max_val = t[0]
+    for i in range(1, len(t)):
+        if not(cur_max_val < t[i]):
+            return False
+        else:
+            cur_max_val = t[i]
+    return True        
+
+
+tet3 = [4, 3, 8]
+
+
+print(is_sorted(tet3))
+print(is_sorted(tet1))
+
+
