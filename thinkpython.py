@@ -181,7 +181,6 @@ print(middle(tet2))
 
 # ex 10.5
 def is_sorted(t):
-    sorted_t = sorted(t)
     cur_max_val = t[0]
     for i in range(1, len(t)):
         if not(cur_max_val < t[i]):
@@ -198,3 +197,4 @@ print(is_sorted(tet3))
 print(is_sorted(tet1))
 
 
+# tets
