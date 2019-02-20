@@ -136,3 +136,16 @@ def print_back(word):
 
 
 print_back('katarzis')
+
+
+#ex 10.1
+def nested_sum(t):
+    sum = 0
+    for i in t:
+        for j in i:
+            sum += j
+    return sum
+
+
+listka = [[1, 1], [2], [2, 5]]
+nested_sum(listka)

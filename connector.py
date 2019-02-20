@@ -16,7 +16,7 @@ def create_connection(db_file):
 
 def select_all_from_table(conn, table):
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM %s" %table)
+    cursor.execute("SELECT * FROM {:s}".format(table))
 
     rows = cursor.fetchall()
 
@@ -26,8 +26,8 @@ def select_all_from_table(conn, table):
 
 def insert_data_into_db(conn, file):
     cursor = conn.cursor()
-    query = "INSERT INTO Scents(scentId, scentName)" \
-            "VALUES({0},{1})".format(1, 2)
+    query = "INSERT INTO Scents(scentId, scentName)" + \
+            "VALUES({:n},{:n})".format(1, 2)
     values = (scentId, scentName)
     cursor.execute(query, values)
     with open(file) as my_file:
