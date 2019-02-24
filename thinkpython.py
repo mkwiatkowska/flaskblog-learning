@@ -197,4 +197,9 @@ print(is_sorted(tet3))
 print(is_sorted(tet1))
 
 
-# tets
+s = 'abc'
+t = [0, 1, 2]
+
+z = zip(s, t)
+for charr, digit in z:
+    print(charr, digit)
