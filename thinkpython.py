@@ -203,3 +203,47 @@ t = [0, 1, 2]
 z = zip(s, t)
 for charr, digit in z:
     print(charr, digit)
+
+
+def most_frequency(s):
+    d = dict()
+    for letter in s:
+        if letter not in d:
+            d[letter] = 1
+        else:
+            d[letter] += 1
+    return d
+
+
+def histogram(txt):
+    d = most_frequency(txt)
+    for keys, values in reversed(sorted(d.items(), key=lambda kv: kv[1])):
+        print(values, keys)
+
+txt = 'To nie ma tak, że jest dobrze, albo że nie dobrze.'
+
+histogram(txt)
+
+
+# finally CLASSES
+class Point2D:
+    """Represents a point in 2D space."""
+    x = 0.0
+    y = 0.0
+
+
+blank = Point2D()
+print(blank)
+blank.x = 1.0
+blank.y = 4.0
+print(blank.x)
+
+
+def dist_b_p(p1, p2):
+    return math.sqrt(math.pow((p2.x - p1.x), 2) + math.pow((p2.y - p1.y), 2))
+
+
+po2 = Point2D()
+
+
+print(dist_b_p(blank, po2))
