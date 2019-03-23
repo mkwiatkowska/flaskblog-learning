@@ -118,7 +118,6 @@ def series():
                 (math.pow(math.factorial(k), 4) * math.pow(396, 4*k))
         if (serie_step < math.pow(10, -15)):
             return series
-            break
         series += serie_step
         k += 1
 
@@ -247,3 +246,44 @@ po2 = Point2D()
 
 
 print(dist_b_p(blank, po2))
+
+
+class Rect:
+    w = 0.0
+    h = 0.0
+    corner = Point2D()
+
+
+box = Rect()
+box.w = 100.0
+box.h = 200.0
+box.corner.x = 1.0
+box.corner.y = 5.0
+
+
+class Time:
+    h = 0
+    m = 0 
+    s = 0
+
+
+def print_time(t):
+    print('{:n}:{:n}:{:n}'.format(t.h, t.m, t.s))
+
+tajm = Time()
+tajm.h = 21
+tajm.m = 37
+tajm.s = 0
+
+print_time(tajm)
+
+
+word = 'kakadu'
+print(len(set(word)), len(word)) 
+
+
+
+def uses_only(word, available):
+    return set(word) <= set(available)
+
+print(uses_only('zuza','abc'))
