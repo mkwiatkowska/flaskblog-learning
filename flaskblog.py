@@ -1,4 +1,5 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, flash, redirect
+from flask_sqlalchemy import SQLAlchemy
 from forms import RegistrationForm, LoginForm
 
 #zainstancjonowanie appki flaskowej
@@ -6,6 +7,9 @@ app = Flask(__name__)
 
 #later make it env variable
 app.config['SECRET_KEY'] = 'a8a1b7728c69b879f4c218afb8d49e36'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+
+db = SQLAlchemy(app)
 
 posts = [
     {
@@ -33,15 +37,25 @@ def about():
     return render_template('about.html', title='About')
 
 
-@app.route("/register")
+@app.route("/register", methods=['GET','POST'])
 def registration():
     form = RegistrationForm()
+    if form.validate_on_submit():
+        flash(f'Account created for {form.username.data}!', 'success')
+        return redirect(url_for('home'))
+    
     return render_template('register.html', title='Registration', form=form)
 
 
-@app.route("/login")
+@app.route("/login", methods=['GET','POST'])
 def login():
     form = LoginForm()
+    if form.validate_on_submit():
+        if form.email.data == 'admin@py.com' and form.password.data == 'admin':
+            flash('u have been logged in', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('couldnt log u in, sorry', 'danger')
     return render_template('login.html', title='Login Page', form=form)
 
 
