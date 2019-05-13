@@ -4,6 +4,7 @@ from flaskblog.forms import RegistrationForm, LoginForm
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, logout_user, current_user, login_required
 
+
 posts = [
     {
         'author': 'Maria Kwiatkowska',
@@ -71,4 +72,6 @@ def logout():
 @app.route("/account")
 @login_required
 def account():
-    return render_template('account.html', title='Account')
+    image_file = url_for('static', filename='profile_pics/' + current_user.img_file)
+    return render_template('account.html', title='Account',
+                           image_file=image_file)
