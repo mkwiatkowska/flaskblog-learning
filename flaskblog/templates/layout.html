@@ -36,6 +36,7 @@
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
                         {% if current_user.is_authenticated %}
+                        <a class="nav-item nav-link" href="{{ url_for('new_post') }}">New Post</a>
                         <a class="nav-item nav-link" href="{{ url_for('account') }}">Account</a>
                         <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                         {% else %}
@@ -61,6 +62,7 @@
                 {% endwith %}
                 {% block content %}{% endblock %}
             </div>
+            <!-- Not used in my app
             <div class="col-md-4">
                 <div class="content-section">
                     <h3>Our Sidebar</h3>
@@ -73,7 +75,7 @@
                         </ul>
                     </p>
                 </div>
-            </div>
+            </div> -->
         </div>
     </main>
 
