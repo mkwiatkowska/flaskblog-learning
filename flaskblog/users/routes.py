@@ -4,7 +4,7 @@ from flaskblog import db, bcrypt
 from flaskblog.models import User, Post
 from flaskblog.users.forms import (
     RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm,
-    ResetPasswordForm)
+    ResetPasswordForm, QuestionnaireForm)
 from flaskblog.users.utils import save_picture, send_reset_email
 
 
@@ -118,3 +118,21 @@ def reset_token(token):
         return redirect(url_for('users.login'))
     return render_template(
         'reset_token.html', title='Reset Password', form=form)
+
+
+@users.route("/questionnaire", methods=['GET', 'POST'])
+def fill_questionnaire():
+    form = QuestionnaireForm()
+    if form.validate_on_submit():
+        gender = form.genders.data
+        group = form.groups.data
+        scent = form.scents.data
+        flash(str(gender+group+scent))
+        return redirect(url_for('users.login'))
+
+    return render_template('questionnaire.html', title='Scents Questionnaire', form=form)
+
+
+@users.route("/questionnaire/results", methods=['GET'])
+def questionnaire_results():
+    pass

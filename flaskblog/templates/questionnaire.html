@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+            <form method="POST" action="">
+                    <!--protection against xss-->
+                    {{ form.hidden_tag() }}
+                    <fieldset class="form-group">
+                        <legend class="border-bottom mb-4">Scents Questionnaire</legend>
+                        <div class="form-ckeck">
+                            Dla jakiej płci?
+                            {% for gender in form.genders %}
+                                <div class="form-check">
+                                    {{ gender }} {{gender.label}}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-ckeck">
+                            Perfum z jakiej grupy zapachowej szukasz?
+                            {% for group in form.groups %}
+                                <div class="form-check">
+                                    {{ group }} {{group.label}}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-ckeck">
+                            Jaki ma być charakter zapachu?
+                            {% for scent in form.scents %}
+                                <div class="form-check">
+                                    {{ scent }} {{scent.label}}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        </fieldset>
+                    <div class="form-group">
+                        {{ form.submit(class="btn btn-outline-info")}}
+                    </div>
+                </form>
+    </div>
+{% endblock content %}

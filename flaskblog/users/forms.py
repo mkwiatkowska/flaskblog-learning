@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms import (
+    StringField, PasswordField, SubmitField, BooleanField, RadioField)
+from wtforms.validators import (
+    DataRequired, Length, Email, EqualTo, ValidationError)
 from flask_login import current_user
 from flaskblog.models import User
 
@@ -70,3 +72,15 @@ class ResetPasswordForm(FlaskForm):
     confirm_password = PasswordField(
         'Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
+
+
+class QuestionnaireForm(FlaskForm):
+    genders = RadioField(choices=[('M', 'Męski'), ('F', 'Damski'), ('U', 'Unisex')])
+    groups = RadioField(choices=[('1', 'Przyprawowej'),
+     ('2', 'Kwiatowej'), ('3', 'Drzewnej'), ('4', 'Deserowej'),
+     ('5', 'Ziołowej'), ('6', 'Animalnej'), ('7', 'Orientalnej'),
+     ('8', 'Owocowej'), ('9', 'Cytrusowej'), ('10', 'Morskiej')])
+    scents = RadioField(choices=[('1', 'Świeży'),
+        ('2', 'Słodki'), ('3', 'Ciepły'), ('4', 'Gorzki'),
+        ('5', 'Wytrawny'), ('6', 'Zimny')])
+    submit = SubmitField('Submit')
