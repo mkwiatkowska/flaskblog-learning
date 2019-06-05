@@ -1,7 +1,8 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint
+from flask import (
+    render_template, url_for, flash, redirect, request, Blueprint, abort)
 from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog import db, bcrypt
-from flaskblog.models import User, Post
+from flaskblog.models import User, Post, PerfumeInfo, PerfumeScents, Scents
 from flaskblog.users.forms import (
     RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm,
     ResetPasswordForm, QuestionnaireForm)
@@ -127,12 +128,29 @@ def fill_questionnaire():
         gender = form.genders.data
         group = form.groups.data
         scent = form.scents.data
-        flash(str(gender+group+scent))
-        return redirect(url_for('users.login'))
+        key = str(gender+group+scent)
+        return redirect(url_for('users.questionnaire_results', key=key))
 
     return render_template('questionnaire.html', title='Scents Questionnaire', form=form)
 
 
-@users.route("/questionnaire/results", methods=['GET'])
-def questionnaire_results():
-    pass
+def is_valid(key):
+    if len(key) == 3:
+        return True
+    else:
+        return False
+
+
+@users.route("/questionnaire/results/<string:key>", methods=['GET'])
+def questionnaire_results(key):
+    if is_valid(key): 
+        var2 = key[1]
+        var3 = key[2]
+        res2 = []
+        res3 = []
+        res22 = PerfumeInfo.query.all()
+
+        flash(res22, 'success')
+    else:
+        abort(403)
+    return render_template('questionnaire_results.html', title='Ur Results')

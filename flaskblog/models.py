@@ -16,6 +16,7 @@ class User(db.Model, UserMixin):
     img_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
+    u_preference = db.relationship('UserPreferences', backref='users preference', lazy=True)
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
@@ -43,3 +44,36 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"Post('{self.title}','{self.content}', '{self.date_posted}')"
+
+
+class PerfumeInfo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    brand = db.Column(db.String(100), nullable=False)
+    p_scent = db.relationship('PerfumeScents', backref='perfume scent pi', lazy=True)
+    p_preference = db.relationship('UserPreferences', backref='perfume preference', lazy=True)
+
+    def __repr__(self):
+        return f"Perfume Info('{self.id}','{self.name}','{self.brand}')"
+
+
+class UserPreferences(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    perfume_id = db.Column(db.Integer, db.ForeignKey('perfume_info.id'), nullable=False)
+
+
+class Scents(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
+    group = db.Column(db.String(50), nullable=False)
+    prefume_scent = db.relationship('PerfumeScents', backref='perfume scent s', lazy=True)
+
+    def __repr__(self):
+        return f"Perfume Info('{self.id}','{self.name}')"
+
+
+class PerfumeScents(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    perfume_id = db.Column(db.Integer, db.ForeignKey('perfume_info.id'), nullable=False)
+    scent_id = db.Column(db.Integer, db.ForeignKey('scents.id'), nullable=False)
