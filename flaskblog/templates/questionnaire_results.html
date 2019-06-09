@@ -1,3 +1,22 @@
 {% extends "layout.html" %}
 {% block content %}
+   
+    <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Brand</th>
+          </tr>
+        </thead>
+        {% for perfume in perfumes %}
+        <tbody>
+          <tr>
+           
+            <td> {{ perfume.name }}</td>
+            <td>{{ perfume.brand }}</td>
+          </tr>
+        </tbody>
+        {% endfor%}
+      </table>
+    
 {% endblock content %}

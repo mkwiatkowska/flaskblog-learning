@@ -2,11 +2,12 @@ from flask import (
     render_template, url_for, flash, redirect, request, Blueprint, abort)
 from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog import db, bcrypt
-from flaskblog.models import User, Post, PerfumeInfo, PerfumeScents, Scents
+from flaskblog.models import User, Post, PerfumeInfo, Scents
 from flaskblog.users.forms import (
     RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm,
     ResetPasswordForm, QuestionnaireForm)
 from flaskblog.users.utils import save_picture, send_reset_email
+from flaskblog.main.recommendations import QuestionnaireRecommendation as qr
 
 
 users = Blueprint('users', __name__)
@@ -130,6 +131,7 @@ def fill_questionnaire():
         scent = form.scents.data
         key = str(gender+group+scent)
         return redirect(url_for('users.questionnaire_results', key=key))
+    
 
     return render_template('questionnaire.html', title='Scents Questionnaire', form=form)
 
@@ -144,13 +146,11 @@ def is_valid(key):
 @users.route("/questionnaire/results/<string:key>", methods=['GET'])
 def questionnaire_results(key):
     if is_valid(key): 
-        var2 = key[1]
-        var3 = key[2]
-        res2 = []
-        res3 = []
-        res22 = PerfumeInfo.query.all()
-
-        flash(res22, 'success')
+        results = qr(key)
     else:
         abort(403)
-    return render_template('questionnaire_results.html', title='Ur Results')
+    perfumes = PerfumeInfo.query.order_by(PerfumeInfo.id.desc()).all()
+    print(type(perfumes))
+    for p in perfumes:
+        print(type(p))
+    return render_template('questionnaire_results.html', title='Ur Results', perfumes=perfumes)

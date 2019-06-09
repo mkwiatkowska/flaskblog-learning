@@ -84,3 +84,5 @@ class QuestionnaireForm(FlaskForm):
         ('2', 'Słodki'), ('3', 'Ciepły'), ('4', 'Gorzki'),
         ('5', 'Wytrawny'), ('6', 'Zimny')])
     submit = SubmitField('Submit')
+
+
