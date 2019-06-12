@@ -145,12 +145,12 @@ def is_valid(key):
 
 @users.route("/questionnaire/results/<string:key>", methods=['GET'])
 def questionnaire_results(key):
-    if is_valid(key): 
+    if is_valid(key):
         results = qr(key)
     else:
         abort(403)
-    perfumes = PerfumeInfo.query.order_by(PerfumeInfo.id.desc()).all()
-    print(type(perfumes))
-    for p in perfumes:
-        print(type(p))
-    return render_template('questionnaire_results.html', title='Ur Results', perfumes=perfumes)
+    
+    print('CZEMO TERASSSSS 444444444444444444')
+    for r in results:
+        print(r)
+    return render_template('questionnaire_results.html', title='Ur Results', results=results)

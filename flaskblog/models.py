@@ -78,7 +78,7 @@ class Scents(db.Model):
     #prefume_scent = db.relationship('PerfumeScents', backref='perfume scent s', lazy=True)
 
     def __repr__(self):
-        return f"('{self.id}','{self.name}')"
+        return f"({self.id},{self.name})"
     
     def get_info(self):
         return (self.id, self.name)
