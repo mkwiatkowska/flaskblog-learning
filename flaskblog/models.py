@@ -60,15 +60,21 @@ class PerfumeInfo(db.Model):
 
     def __repr__(self):
         return f"({self.id},{self.name},{self.brand})"
-    
+
     def get_info(self):
         return (self.id, self.name, self.brand)
+
+    def get_type(self):
+        return self.group
 
 
 class UserPreferences(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     perfume_id = db.Column(db.Integer, db.ForeignKey('perfume_info.id'), nullable=False)
+
+    def __repr__(self):
+        return f"({self.perfume_id})"
 
 
 class Scents(db.Model):

@@ -2,12 +2,13 @@ from flask import (
     render_template, url_for, flash, redirect, request, Blueprint, abort)
 from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog import db, bcrypt
-from flaskblog.models import User, Post, PerfumeInfo, Scents
+from flaskblog.models import User, Post, PerfumeInfo, Scents, UserPreferences
 from flaskblog.users.forms import (
     RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm,
-    ResetPasswordForm, QuestionnaireForm)
+    ResetPasswordForm, QuestionnaireForm, AddToFavourites)
 from flaskblog.users.utils import save_picture, send_reset_email
 from flaskblog.main.recommendations import QuestionnaireRecommendation as qr
+from flaskblog.main.utils import is_valid
 
 
 users = Blueprint('users', __name__)
@@ -131,16 +132,8 @@ def fill_questionnaire():
         scent = form.scents.data
         key = str(gender+group+scent)
         return redirect(url_for('users.questionnaire_results', key=key))
-    
 
     return render_template('questionnaire.html', title='Scents Questionnaire', form=form)
-
-
-def is_valid(key):
-    if len(key) == 3:
-        return True
-    else:
-        return False
 
 
 @users.route("/questionnaire/results/<string:key>", methods=['GET'])
@@ -149,8 +142,62 @@ def questionnaire_results(key):
         results = qr(key)
     else:
         abort(403)
-    
-    print('CZEMO TERASSSSS 444444444444444444')
-    for r in results:
-        print(r)
-    return render_template('questionnaire_results.html', title='Ur Results', results=results)
+
+    return render_template(
+        'questionnaire_results.html', title='Ur Results', results=results)
+
+
+def record_exists(user_id, perfume_id):
+    query = UserPreferences.query.filter(
+        (UserPreferences.user_id.like(user_id)) &
+        (UserPreferences.perfume_id.like(perfume_id))).all()
+    print(query)
+    if query:
+        return True
+    else:
+        return False
+
+@users.route("/add_favourites", methods=['GET', 'POST'])
+@login_required
+def favourites():
+    form = AddToFavourites()
+    form.perfume.choices = [(str(p.id), str(p.name+' by '+p.brand)) for p in PerfumeInfo.query.order_by('name')]
+    username = current_user.username
+    user_id = (User.query.filter_by(username=username).first()).id
+    choices = UserPreferences.query.filter(UserPreferences.user_id.like(user_id)).all()
+    print('CZOJSES\n\n')
+    print(choices)
+    tmp_choices = get_perfume_names(choices)
+    print('\n\n\n TU PACZ \n\n')
+    print(tmp_choices)
+    your_choices = []
+    for tmp in tmp_choices:
+        your_choices.append(str(tmp[0].name+' by '+tmp[0].brand))
+    if form.validate_on_submit():
+        perfume = form.perfume.data
+        
+        
+        user_preference = UserPreferences(user_id=user_id, perfume_id=perfume)
+        if not record_exists(user_id, perfume):
+            db.session.add(user_preference)
+            db.session.commit()
+        else:
+            flash('record already exists in database')
+        return redirect(url_for('users.favourites'))
+
+    return render_template('add_favourite_perfumes.html', title='Favs', form=form, your_choices=your_choices)
+
+
+def get_perfume_names(id_list):
+    perfumes = []
+    print('id z listy')
+    print(id_list)
+    for p_id in id_list:
+        print(p_id.perfume_id)
+        query = PerfumeInfo.query.filter(PerfumeInfo.id.like(p_id.perfume_id)).all()
+        print('co to kłery')
+        print(query)
+        perfumes.append(query)
+    print('id po teoretycznym wyciagnieciu')
+    print(perfumes)
+    return perfumes

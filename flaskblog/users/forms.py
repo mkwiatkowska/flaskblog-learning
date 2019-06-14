@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import (
-    StringField, PasswordField, SubmitField, BooleanField, RadioField)
+    StringField, PasswordField, SubmitField, BooleanField, RadioField, SelectField)
 from wtforms.validators import (
     DataRequired, Length, Email, EqualTo, ValidationError)
 from flask_login import current_user
@@ -86,3 +86,6 @@ class QuestionnaireForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
+class AddToFavourites(FlaskForm):
+    perfume = SelectField('Perfume', validators=[DataRequired()], coerce=str)
+    submit = SubmitField('Submit')
