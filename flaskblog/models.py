@@ -74,7 +74,7 @@ class UserPreferences(db.Model):
     perfume_id = db.Column(db.Integer, db.ForeignKey('perfume_info.id'), nullable=False)
 
     def __repr__(self):
-        return f"({self.perfume_id})"
+        return f"({self.id}, {self.user_id}, {self.perfume_id})"
 
 
 class Scents(db.Model):

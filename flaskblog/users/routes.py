@@ -7,7 +7,8 @@ from flaskblog.users.forms import (
     RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm,
     ResetPasswordForm, QuestionnaireForm, AddToFavourites)
 from flaskblog.users.utils import save_picture, send_reset_email
-from flaskblog.main.recommendations import QuestionnaireRecommendation as qr
+from flaskblog.main.recommendations import (
+    QuestionnaireRecommendation as qr, UserRecommendation as us)
 from flaskblog.main.utils import is_valid
 
 
@@ -175,29 +176,57 @@ def favourites():
         your_choices.append(str(tmp[0].name+' by '+tmp[0].brand))
     if form.validate_on_submit():
         perfume = form.perfume.data
-        
-        
         user_preference = UserPreferences(user_id=user_id, perfume_id=perfume)
         if not record_exists(user_id, perfume):
             db.session.add(user_preference)
             db.session.commit()
         else:
-            flash('record already exists in database')
+            flash('record already exists in database', 'danger')
         return redirect(url_for('users.favourites'))
 
-    return render_template('add_favourite_perfumes.html', title='Favs', form=form, your_choices=your_choices)
+    return render_template('add_favourite_perfumes.html', title='Favs', form=form, tmp_choices=tmp_choices)
 
 
 def get_perfume_names(id_list):
     perfumes = []
-    print('id z listy')
-    print(id_list)
     for p_id in id_list:
         print(p_id.perfume_id)
         query = PerfumeInfo.query.filter(PerfumeInfo.id.like(p_id.perfume_id)).all()
-        print('co to kłery')
-        print(query)
         perfumes.append(query)
-    print('id po teoretycznym wyciagnieciu')
-    print(perfumes)
     return perfumes
+
+
+@users.route("/delete_preference/", methods=['POST'])
+@login_required
+def delete_preference():
+    user = current_user.id
+    query = UserPreferences.query.filter(UserPreferences.user_id.like(user)).all()
+    preference = query
+    if preference:
+        for each_one in preference:
+            db.session.delete(each_one)
+            db.session.commit()
+        flash('Perfumes has been removed', 'success')
+    else:
+        flash('No such record in db, please reload the page')
+    return redirect(url_for('users.favourites'))
+
+
+@users.route("/recommendations", methods=['GET', 'POST'])
+@login_required
+def recommend_perfumes():
+    user = current_user.id
+    query = UserPreferences.query.filter(UserPreferences.user_id.like(user)).all()
+    print('\n\n\ CHUJAAAAAA \n')
+    print(query)
+    print(len(query))
+    user_perfumes = []
+    if len(query) < 3:
+        flash('You have to have added at least 3 perfumes to your favourites', 'info')
+        return redirect(url_for('users.favourites'))
+
+    for p in query:
+        user_perfumes.append(p.perfume_id)
+    #print(user_perfumes)
+    recommendations = us(user_perfumes)
+    return render_template('recommended.html', title='Scents Recommended Just For You', recommendations=recommendations)
